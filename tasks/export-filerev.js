@@ -59,10 +59,10 @@ function exportFilerev (grunt) {
     if (error) {
       grunt.fail.fatal(error)
     }
-    options.onDone(summary)
     grunt.log.writeln(
       'Export file revision:\n' + JSON.stringify(summary, null, 2)
     )
+    options.onDone(summary)
     taskDone()
   })
 }
