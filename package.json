@@ -1,0 +1,26 @@
+{
+  "name": "grunt-export-filerev",
+  "version": "0.0.1",
+  "description": "Calculate file revision based on file content and export revision by callback for your custom useage",
+  "main": "tasks/export-filerev.js",
+  "files": "tasks",
+  "scripts": {
+    "test": "grunt test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:kerryChen95/grunt-export-filerev.git"
+  },
+  "keywords": [
+    "gruntplugin",
+    "rev",
+    "revision",
+    "assets"
+  ],
+  "author": "kerryChen95",
+  "license": "MIT",
+  "dependencies": {
+    "chalk": "^0.5.1",
+    "each-async": "^1.1.0"
+  }
+}

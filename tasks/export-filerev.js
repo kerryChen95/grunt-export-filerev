@@ -1,0 +1,64 @@
+;'use strict'
+var crypto = require('crypto')
+var eachAsync = require('each-async')
+var fs = require('fs')
+var chalk = require('chalk')
+
+module.exports = function (grunt) {
+  grunt.registerMultiTask(
+    'export-filerev',
+    'Calculate file revision based on file content and export revision by' +
+    'callback for your custom useage',
+    function () {
+      var args = [].slice.call(arguments)
+      args.unshift(grunt)
+      task.apply(this, args)
+    }
+  )
+}
+
+function task (grunt) {
+  var taskDone = this.async()
+  var options = this.options({
+    algorithm: 'md5',
+    length: 8,
+    onFileDone: noop,
+    onDone: noop
+  })
+  var summary = {}
+
+  eachAsync(this.files, function (el, i, eachDone) {
+    eachAsync(el.src, function (srcFile, j, eachDone2) {
+      if (grunt.file.isDir(srcFile)) {
+        return
+      }
+
+      // readable and writable stream
+      var hash = crypto.createHash(options.algorithm)
+      fs.createReadStream(srcFile, {encoding: 'utf8'})
+        .pipe(hash)
+      hash.on('finish', function () {
+        var revision = JSON.parse(hash.read())
+        options.onFileDone(srcFile, JSON.parse(revision))
+        summary[srcFile] = revision
+        eachDone2()
+      })
+    }, function finish2 (error) {
+      if (error) {
+        grunt.fail.fatal(error)
+      }
+      eachDone()
+    })
+  }, function finish (error) {
+    if (error) {
+      grunt.fail.fatal(error)
+    }
+    options.onDone(summary)
+    grunt.log.writeln(
+      'Export file revision:\n' + JSON.stringify(summary, null, 2)
+    )
+    taskDone()
+  })
+}
+
+function noop () {}
