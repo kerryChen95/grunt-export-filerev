@@ -47,6 +47,9 @@ function exportFilerev (grunt) {
         }
         options.onFileDone(srcFile, revision)
         summary[srcFile] = revision
+        grunt.verbose.writeln('Revision: ' + chalk.cyan(srcFile) + ' -> ' +
+          chalk.cyan(revision)
+        )
         eachDone2()
       })
     }, function finish2 (error) {
