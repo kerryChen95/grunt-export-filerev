@@ -62,6 +62,7 @@ function exportFilerev (grunt) {
     grunt.log.writeln(
       'Export file revision:\n' + JSON.stringify(summary, null, 2)
     )
+    grunt.config(this.name + ':' + this.target, summary)
     options.onDone(summary)
     taskDone()
   })
