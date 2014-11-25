@@ -12,12 +12,12 @@ module.exports = function (grunt) {
     function () {
       var args = [].slice.call(arguments)
       args.unshift(grunt)
-      task.apply(this, args)
+      exportFilerev.apply(this, args)
     }
   )
 }
 
-function task (grunt) {
+function exportFilerev (grunt) {
   var taskDone = this.async()
   var options = this.options({
     algorithm: 'md5',
@@ -26,8 +26,9 @@ function task (grunt) {
     onDone: noop
   })
   var summary = {}
+  var task = this
 
-  eachAsync(this.files, function (el, i, eachDone) {
+  eachAsync(task.files, function (el, i, eachDone) {
     eachAsync(el.src, function (srcFile, j, eachDone2) {
       if (grunt.file.isDir(srcFile)) {
         return
