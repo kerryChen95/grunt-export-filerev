@@ -20,6 +20,7 @@
   "author": "kerryChen95",
   "license": "MIT",
   "dependencies": {
+    "bind-args": "^0.1.1",
     "chalk": "^0.5.1",
     "each-async": "^1.1.0"
   }

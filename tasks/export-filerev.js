@@ -3,17 +3,14 @@ var crypto = require('crypto')
 var eachAsync = require('each-async')
 var fs = require('fs')
 var chalk = require('chalk')
+var bindArgs = require('bind-args')
 
 module.exports = function (grunt) {
   grunt.registerMultiTask(
     'export-filerev',
     'Calculate file revision based on file content and export revision by' +
     'callback for your custom useage',
-    function () {
-      var args = [].slice.call(arguments)
-      args.unshift(grunt)
-      exportFilerev.apply(this, args)
-    }
+    bindArgs(exportFilerev, grunt)
   )
 }
 
