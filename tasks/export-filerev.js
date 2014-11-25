@@ -36,11 +36,14 @@ function exportFilerev (grunt) {
 
       // readable and writable stream
       var hash = crypto.createHash(options.algorithm)
-      fs.createReadStream(srcFile, {encoding: 'utf8'})
-        .pipe(hash)
-      hash.on('finish', function () {
-        var revision = JSON.parse(hash.read())
-        options.onFileDone(srcFile, JSON.parse(revision))
+      var fileStream = fs.createReadStream(srcFile)
+      .on('readable', function () {
+        var buffer = fileStream.read()
+        hash.update(buffer)
+      })
+      .on('end', function () {
+        var revision = hash.digest('hex')
+        options.onFileDone(srcFile, revision)
         summary[srcFile] = revision
         eachDone2()
       })
