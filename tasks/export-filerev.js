@@ -30,10 +30,6 @@ function exportFilerev (grunt) {
 
   eachAsync(task.files, function (el, i, eachDone) {
     eachAsync(el.src, function (srcFile, j, eachDone2) {
-      if (grunt.file.isDir(srcFile)) {
-        return
-      }
-
       // readable and writable stream
       var hash = crypto.createHash(options.algorithm)
       var fileStream = fs.createReadStream(srcFile)
