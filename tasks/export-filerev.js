@@ -19,9 +19,12 @@ module.exports = function (grunt) {
 
 function exportFilerev (grunt) {
   var taskDone = this.async()
+  var HEX
   var options = this.options({
     algorithm: 'md5',
     length: 8,
+    // Optional values: `16`, `32`
+    digit: HEX = 16,
     onFileDone: noop,
     onDone: noop
   })
@@ -39,6 +42,9 @@ function exportFilerev (grunt) {
       })
       .on('end', function () {
         var revision = hash.digest('hex')
+        if (options.digit !== HEX) {
+          revision = parseInt(revision, HEX).toString(options.digit)
+        }
         options.onFileDone(srcFile, revision)
         summary[srcFile] = revision
         eachDone2()
