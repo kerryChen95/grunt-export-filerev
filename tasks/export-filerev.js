@@ -22,50 +22,50 @@ function exportFilerev (grunt) {
     length: 8,
     // Optional values: `16`, `32`
     digit: HEX = 16,
-    onFileDone: noop,
-    onDone: noop
+    onFileDone: function (revision, file, done) {
+      done()
+    },
+    onAllFilesDone: function (summary, done) {
+      done()
+    }
   })
   var summary = {}
   var task = this
+  var filesSrc = task.filesSrc.filter(function (file) {
+    return grunt.file.isFile(file)
+  })
 
-  eachAsync(task.files, function (el, i, eachDone) {
-    eachAsync(el.src, function (srcFile, j, eachDone2) {
-      // readable and writable stream
+  eachAsync(
+    filesSrc,
+    function (file, i, eachDone) {
+      // `hash` is readable and writeable stream
       var hash = crypto.createHash(options.algorithm)
-      var fileStream = fs.createReadStream(srcFile)
+      var readStream = fs.createReadStream(file)
       .on('readable', function () {
-        var buffer = fileStream.read()
+        var buffer = readStream.read()
         hash.update(buffer)
       })
       .on('end', function () {
         var revision = hash.digest('hex')
-        if (options.digit !== HEX) {
-          revision = parseInt(revision, HEX).toString(options.digit)
-        }
-        options.onFileDone(srcFile, revision)
-        summary[srcFile] = revision
-        grunt.verbose.writeln('Revision: ' + chalk.cyan(srcFile) + ' -> ' +
-          chalk.cyan(revision)
+        // if (options.radix !== HEX) {
+        //   revision = parseInt(revision, HEX).toString(options.radix)
+        // }
+        summary[file] = revision
+        grunt.verbose.writeln(
+          'Revision: ' + chalk.cyan(file) + '->' + chalk.cyan(revision)
         )
-        eachDone2()
+        options.onFileDone(revision, file, eachDone)
       })
-    }, function finish2 (error) {
+    },
+    function finish (error) {
       if (error) {
         grunt.fail.fatal(error)
       }
-      eachDone()
-    })
-  }, function finish (error) {
-    if (error) {
-      grunt.fail.fatal(error)
+      grunt.log.writeln(
+        chalk.cyan('Export the summary of file revision:\n') + JSON.stringify(summary, null, 2)
+      )
+      grunt.config(task.nameArgs, summary)
+      options.onAllFilesDone(summary, taskDone)
     }
-    grunt.log.ok(
-      'Export file revision:\n' + JSON.stringify(summary, null, 2)
-    )
-    grunt.config(this.name + ':' + this.target, summary)
-    options.onDone(summary)
-    taskDone()
-  })
+  )
 }
-
-function noop () {}
