@@ -1,6 +1,6 @@
 {
   "name": "grunt-export-filerev",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Calculate a revision value for each file based on file content, and export revision values by callback and `grunt.config()` for your custom usage, such as rename file, archive all files' revisions",
   "main": "tasks/export-filerev.js",
   "files": [
@@ -24,12 +24,11 @@
   "author": "kerryChen95",
   "license": "MIT",
   "dependencies": {
-    "bind-args": "^0.1.1",
+    "bind-args": "^0.2.1",
     "chalk": "^0.5.1",
     "each-async": "^1.1.0"
   },
   "devDependencies": {
-    "bind-args": "^0.2.1",
     "grunt": "^0.4.5",
     "grunt-debug-task": "^0.1.5",
     "load-grunt-tasks": "^1.0.0",
