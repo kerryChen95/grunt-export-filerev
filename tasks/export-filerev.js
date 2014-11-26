@@ -21,7 +21,7 @@ function exportFilerev (grunt) {
     algorithm: 'md5',
     length: 8,
     // Optional values: `16`, `32`
-    digit: HEX = 16,
+    // radix: HEX = 16,
     onFileDone: function (revision, file, done) {
       done()
     },
