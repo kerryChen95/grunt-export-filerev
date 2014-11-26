@@ -3,7 +3,9 @@
   "version": "0.0.1",
   "description": "Calculate file revision based on file content and export revision by callback for your custom useage",
   "main": "tasks/export-filerev.js",
-  "files": "tasks",
+  "files": [
+    "tasks"
+  ],
   "scripts": {
     "test": "grunt test"
   },
