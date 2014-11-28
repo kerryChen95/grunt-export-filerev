@@ -19,15 +19,17 @@ module.exports = function (grunt) {
 var prototype = {
   addTargetAlgorithm: function (algorithm) {
     var exportFilerevTask = this
-    exportFilerevTask[algorithm] = {
+    var length = 6
+    this[algorithm] = {
       expand: true,
       cwd: 'test/fixtures',
       src: ['*', '**/*'],
       options: {
         algorithm: algorithm,
-        onFileDone: bindArgs(this._assert, algorithm),
+        length: length,
+        onFileDone: bindArgs(this._assert, algorithm, length),
         onAllFilesDone: function (summary, done) {
-          _.forOwn(summary, bindArgs(exportFilerevTask._assert, algorithm))
+          _.forOwn(summary, bindArgs(exportFilerevTask._assert, algorithm, length))
           done()
         }
       }
@@ -35,10 +37,10 @@ var prototype = {
     return this
   },
   // assert bound argumets for centain algorithm
-  _assert: function (algorithm, actualRev, file, done) {
+  _assert: function (algorithm, length, actualRev, file, done) {
     assert.strictEqual(
-      actualRev,
-      hashMap[file][algorithm],
+      actualRev.slice(0, length),
+      hashMap[file][algorithm].slice(0, length),
       'should support ' + algorithm + ' algorithm on file: ' + file
     )
     if (typeof done === 'function') {

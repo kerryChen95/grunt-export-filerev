@@ -47,6 +47,7 @@ function exportFilerev (grunt) {
       })
       .on('end', function () {
         var revision = hash.digest('hex')
+        revision = revision.slice(0, options.length)
         // if (options.radix !== HEX) {
         //   revision = parseInt(revision, HEX).toString(options.radix)
         // }
