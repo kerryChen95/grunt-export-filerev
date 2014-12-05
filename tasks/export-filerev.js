@@ -62,7 +62,7 @@ function exportFilerev (grunt) {
       if (error) {
         grunt.fail.fatal(error)
       }
-      grunt.log.writeln(
+      grunt.verbose.writeln(
         chalk.cyan('Export the summary of file revision:\n') + JSON.stringify(summary, null, 2)
       )
       grunt.config(task.nameArgs, summary)
