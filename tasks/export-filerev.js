@@ -55,7 +55,7 @@ function exportFilerev (grunt) {
         grunt.verbose.writeln(
           'Revision: ' + chalk.cyan(file) + '->' + chalk.cyan(revision)
         )
-        options.onFileDone(revision, file, eachDone)
+        options.onFileDone.call(task, revision, file, eachDone)
       })
     },
     function finish (error) {
@@ -66,7 +66,7 @@ function exportFilerev (grunt) {
         chalk.cyan('Export the summary of file revision:\n') + JSON.stringify(summary, null, 2)
       )
       grunt.config(task.nameArgs, summary)
-      options.onAllFilesDone(summary, taskDone)
+      options.onAllFilesDone.call(task, summary, taskDone)
     }
   )
 }
